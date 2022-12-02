@@ -1,7 +1,14 @@
 import { FC, useState } from "react";
-import { TextField, Grid, InputAdornment, IconButton, Typography, Button } from "@mui/material";
+import {
+  TextField,
+  Grid,
+  InputAdornment,
+  IconButton,
+  Typography,
+  Button,
+} from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import theme from "../theme"
+import theme from "../theme";
 
 interface Props {
   submitRegister: (email: string, password: string) => void;
@@ -16,15 +23,19 @@ export const Register: FC<Props> = ({ submitRegister }) => {
 
   const onClickRegister = () => {
     if (email && password && passwordAgain && password === passwordAgain) {
-      submitRegister(email, password)
+      submitRegister(email, password);
     }
-  }
+  };
 
   return (
     <Grid container item xs direction="column">
       <Grid item>
-        <Typography variant="h5" color="initial" fontWeight={"bold"}>Create Account</Typography>
-        <Typography variant="subtitle2" color={theme.palette.primary.light} >Please sign up to continue</Typography>
+        <Typography variant="h5" color="initial" fontWeight={"bold"}>
+          Create Account
+        </Typography>
+        <Typography variant="subtitle2" color={theme.palette.primary.light}>
+          Please sign up to continue
+        </Typography>
       </Grid>
       <Grid item>
         <TextField
@@ -89,7 +100,14 @@ export const Register: FC<Props> = ({ submitRegister }) => {
         />
       </Grid>
       <Grid item textAlign={"center"} marginTop={2}>
-        <Button variant="contained" color="primary" onClick={onClickRegister} disabled={!email || !password || !passwordAgain || password !== passwordAgain}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onClickRegister}
+          disabled={
+            !email || !password || !passwordAgain || password !== passwordAgain
+          }
+        >
           Register
         </Button>
       </Grid>
