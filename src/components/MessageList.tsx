@@ -9,10 +9,6 @@ export const MessageList: FC<Props> = () => {
     <Grid
       container
       direction="column"
-      component={Paper}
-      elevation={0}
-      borderRadius={4}
-      py={3}
     >
       <Grid item>
         <Message
