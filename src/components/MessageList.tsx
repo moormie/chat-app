@@ -6,10 +6,7 @@ interface Props {}
 
 export const MessageList: FC<Props> = () => {
   return (
-    <Grid
-      container
-      direction="column"
-    >
+    <Grid container direction="column" rowGap={2}>
       <Grid item>
         <Message
           type="sender"

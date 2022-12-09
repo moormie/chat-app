@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
 import { UserAvatar } from "./UserAvatar";
 
@@ -16,11 +16,10 @@ export const Message: FC<Props> = ({ userName, message, type }) => {
       </Grid>
       <Grid
         item
-        component={Paper}
-        variant="outlined"
         minWidth={0}
         maxWidth={400}
         padding={2}
+        bgcolor="#e3e3e3"
         borderRadius={
           type === "owner" ? "16px 0px 16px 16px" : "0px 16px 16px 16px"
         }
