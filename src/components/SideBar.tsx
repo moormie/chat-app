@@ -11,11 +11,11 @@ import {
   ListItemText,
   Typography,
   Paper,
-  TextField,
+  Box,
 } from "@mui/material";
 import ForumIcon from "@mui/icons-material/Forum";
-import SearchIcon from "@mui/icons-material/Search";
 import { UserAvatar } from "./UserAvatar";
+import { Input } from "./Input";
 
 interface Props {}
 
@@ -27,7 +27,10 @@ export const SideBar: FC<Props> = () => {
       anchor="left"
       PaperProps={{
         sx: {
-          bgcolor: "#e4e4e4",
+          bgcolor: "transparent",
+          padding: 2,
+          border: "none",
+          width: 272,
         },
       }}
     >
@@ -35,8 +38,8 @@ export const SideBar: FC<Props> = () => {
         elevation={0}
         sx={{
           padding: 2,
-          margin: 2,
-          borderRadius: 4,
+          marginBottom: 2,
+          borderRadius: 5,
           width: 240,
           display: "flex",
           alignItems: "center",
@@ -51,18 +54,10 @@ export const SideBar: FC<Props> = () => {
           moormie
         </Typography>
       </Paper>
-      <TextField
-        placeholder="Search messages, contacts..."
-        margin="dense"
-        id="search"
-        onChange={(e) => setSearch(e.target.value)}
-        variant="standard"
-        InputProps={{
-          startAdornment: <SearchIcon />,
-        }}
-        sx={{ margin: 3 }}
-      />
-      <List>
+      <Box mb={2}>
+        <Input placeholder="Search ..." onChange={setSearch} />
+      </Box>
+      <List sx={{ backgroundColor: "white", borderRadius: 5 }}>
         <ListItem>
           <ListItemButton sx={{ borderRadius: 3 }}>
             <ListItemIcon>
