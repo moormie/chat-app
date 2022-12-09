@@ -19,10 +19,39 @@ export const HomePage = () => {
         boxSizing="border-box"
         rowGap={2}
       >
-        <Grid container item justifyContent="flex-end" bgcolor="white" borderRadius={4} px={2}>
-          <Link component={Button} underline="none" borderRadius="unset" borderBottom="2px solid">Chat</Link>
-          <Link component={Button} underline="none" borderRadius="unset" color="secondary">Contacts</Link>
-          <Link component={Button} underline="none" borderRadius="unset" color="secondary">Settings</Link>
+        <Grid
+          container
+          item
+          justifyContent="flex-end"
+          bgcolor="white"
+          borderRadius={4}
+          px={2}
+        >
+          <Link
+            component={Button}
+            underline="none"
+            borderRadius="unset"
+            borderBottom="2px solid"
+          >
+            Chat
+          </Link>
+
+          <Link
+            component={Button}
+            underline="none"
+            borderRadius="unset"
+            color="secondary"
+          >
+            Contacts
+          </Link>
+          <Link
+            component={Button}
+            underline="none"
+            borderRadius="unset"
+            color="secondary"
+          >
+            Settings
+          </Link>
         </Grid>
         <Grid
           container
