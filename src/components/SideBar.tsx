@@ -16,10 +16,13 @@ import {
 import ForumIcon from "@mui/icons-material/Forum";
 import { UserAvatar } from "./UserAvatar";
 import { Input } from "./Input";
+import { useAuthContext } from "../contexts/authContext";
 
 interface Props {}
 
 export const SideBar: FC<Props> = () => {
+  const { user } = useAuthContext();
+
   const [search, setSearch] = useState("");
   return (
     <Drawer
@@ -51,7 +54,7 @@ export const SideBar: FC<Props> = () => {
           sx={{ bgcolor: `${theme.palette.primary.dark}`, marginRight: 2 }}
         />
         <Typography variant="h6" color="initial">
-          moormie
+          {user?.name}
         </Typography>
       </Paper>
       <Box mb={2}>
