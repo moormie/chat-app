@@ -1,9 +1,11 @@
-import { Grid, Link, Button } from "@mui/material";
+import { Grid } from "@mui/material";
 import { MessageInput } from "../components/MessageInput";
 import { MessageList } from "../components/MessageList";
+import { NavBar } from "../components/NavBar";
 import { SideBar } from "../components/SideBar";
 
 export const HomePage = () => {
+
   const onSendMessage = (message: string) => {};
 
   return (
@@ -19,39 +21,8 @@ export const HomePage = () => {
         boxSizing="border-box"
         rowGap={2}
       >
-        <Grid
-          container
-          item
-          justifyContent="flex-end"
-          bgcolor="white"
-          borderRadius={4}
-          px={2}
-        >
-          <Link
-            component={Button}
-            underline="none"
-            borderRadius="unset"
-            borderBottom="2px solid"
-          >
-            Chat
-          </Link>
-
-          <Link
-            component={Button}
-            underline="none"
-            borderRadius="unset"
-            color="secondary"
-          >
-            Contacts
-          </Link>
-          <Link
-            component={Button}
-            underline="none"
-            borderRadius="unset"
-            color="secondary"
-          >
-            Settings
-          </Link>
+        <Grid item xs>
+          <NavBar />
         </Grid>
         <Grid
           container
