@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, FormEvent, useState } from "react";
 import {
   TextField,
   Grid,
@@ -11,24 +11,38 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import theme from "../theme";
 
 interface Props {
-  submitRegister: (email: string, password: string) => void;
+  submitRegister: (email: string, password: string, nickName: string) => void;
 }
 
 export const Register: FC<Props> = ({ submitRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordAgain, setShowPasswordAgain] = useState(false);
 
-  const onClickRegister = () => {
-    if (email && password && passwordAgain && password === passwordAgain) {
-      submitRegister(email, password);
+  const onClickRegister = (e: FormEvent<HTMLFormElement>) => {
+    if (
+      email &&
+      password &&
+      passwordAgain &&
+      password === passwordAgain &&
+      name
+    ) {
+      e.preventDefault();
+      submitRegister(email, password, name);
     }
   };
 
   return (
-    <Grid container item xs direction="column">
+    <Grid
+      container
+      item
+      direction="column"
+      component="form"
+      onSubmit={(e) => onClickRegister(e)}
+    >
       <Grid item>
         <Typography variant="h5" color="initial" fontWeight={"bold"}>
           Create Account
@@ -36,6 +50,18 @@ export const Register: FC<Props> = ({ submitRegister }) => {
         <Typography variant="subtitle2" color={theme.palette.primary.light}>
           Please sign up to continue
         </Typography>
+      </Grid>
+      <Grid item>
+        <TextField
+          id="name"
+          label="Name"
+          type={"text"}
+          variant="standard"
+          fullWidth
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          margin="normal"
+        />
       </Grid>
       <Grid item>
         <TextField
@@ -70,7 +96,7 @@ export const Register: FC<Props> = ({ submitRegister }) => {
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
       </Grid>
@@ -95,15 +121,15 @@ export const Register: FC<Props> = ({ submitRegister }) => {
                   {showPasswordAgain ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
       </Grid>
       <Grid item textAlign={"center"} marginTop={2}>
         <Button
+          type="submit"
           variant="contained"
           color="primary"
-          onClick={onClickRegister}
           disabled={
             !email || !password || !passwordAgain || password !== passwordAgain
           }
