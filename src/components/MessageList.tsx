@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Grid, Paper } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Message } from "./Message";
 
 interface Props {}
