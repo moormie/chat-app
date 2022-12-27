@@ -36,7 +36,7 @@ export const SideBar: FC<Props> = () => {
       setContactList(result)
     }
     load();
-  }, [user?.id]);
+  }, [user]);
 
   const [search, setSearch] = useState("");
 
