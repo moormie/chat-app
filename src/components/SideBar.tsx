@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import theme from "../theme";
 import {
   Avatar,
@@ -17,13 +17,29 @@ import ForumIcon from "@mui/icons-material/Forum";
 import { UserAvatar } from "./UserAvatar";
 import { Input } from "./Input";
 import { useAuthContext } from "../contexts/authContext";
+import { getContactList } from "../firebase/userAuth";
+import { BaseUser } from "../types/User";
 
 interface Props {}
 
 export const SideBar: FC<Props> = () => {
   const { user } = useAuthContext();
 
+  const [ contactList, setContactList] = useState<BaseUser[]>([])
+
+  useEffect(() => {
+    if(!user) {
+      return
+    }
+    const load = async () => {
+      const result = await getContactList(user.id)
+      setContactList(result)
+    }
+    load();
+  }, [user?.id]);
+
   const [search, setSearch] = useState("");
+
   return (
     <Drawer
       variant="permanent"
@@ -70,14 +86,14 @@ export const SideBar: FC<Props> = () => {
           </ListItemButton>
         </ListItem>
         <Divider />
-        {["John Doe", "Amelia Black", "Hanna Jane", "Peter Smith"].map(
-          (text, index) => (
-            <ListItem key={`${text}-${index}`}>
+        {contactList.map(
+          (contact) => (
+            <ListItem key={contact.id}>
               <ListItemButton sx={{ borderRadius: 3 }}>
                 <ListItemIcon>
-                  <UserAvatar text={text} />
+                  <UserAvatar text={contact.name} />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={contact.name} />
               </ListItemButton>
             </ListItem>
           )

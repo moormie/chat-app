@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Grid, Link, Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { signOut } from "../firebase/userAuth";
 
 interface LinkItem {
   name: string;
@@ -18,8 +19,13 @@ export const NavBar: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onSelectLink = (link: string) => {
-    navigate(link);
+  const onSelectLink = (linkItem: LinkItem) => {
+    if (linkItem.name === "Log Out") {
+      signOut();
+      navigate("/");
+    } else {
+      navigate(linkItem.navigate);
+    }
   };
 
   const isSelected = (link: string) => {
@@ -42,7 +48,7 @@ export const NavBar: FC = () => {
           borderRadius="unset"
           borderBottom={isSelected(link.navigate) ? "2px solid" : "none"}
           color={isSelected(link.navigate) ? "primary" : "secondary"}
-          onClick={() => onSelectLink(link.navigate)}
+          onClick={() => onSelectLink(link)}
         >
           {link.name}
         </Link>
