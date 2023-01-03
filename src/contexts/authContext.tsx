@@ -5,10 +5,12 @@ import { User } from "../types/User";
 
 interface ContextData {
   user: User | null;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<ContextData>({
   user: null,
+  loading: true,
 });
 
 type Props = {
@@ -17,6 +19,7 @@ type Props = {
 
 export const AuthContextProvider: FC<Props> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
@@ -26,16 +29,17 @@ export const AuthContextProvider: FC<Props> = ({ children }) => {
           name: user?.displayName ?? "",
           email: user?.email!,
         });
+        setLoading(false);
+      } else {
+        setCurrentUser(null);
+        setLoading(false);
       }
     });
-
-    return () => {
-      unsub();
-    };
+    return () => unsub();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: currentUser }}>
+    <AuthContext.Provider value={{ user: currentUser, loading: loading }}>
       {children}
     </AuthContext.Provider>
   );
@@ -44,4 +48,12 @@ export const AuthContextProvider: FC<Props> = ({ children }) => {
 export const useAuthContext = () => {
   const store = useContext(AuthContext);
   return store;
+};
+
+const saveUserToStorage = (id: string) => {
+  localStorage.setItem("uId", id);
+};
+
+const getUserFromStorage = () => {
+  return localStorage.getItem("uId");
 };

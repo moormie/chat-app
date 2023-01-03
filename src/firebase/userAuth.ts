@@ -1,4 +1,4 @@
-import { BaseUser, UserWithContacts } from './../types/User';
+import { BaseUser, UserWithContacts } from "./../types/User";
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -98,7 +98,7 @@ export const getContactList = async (id: string) => {
   const user = await getUserById(id);
   const contacts = user?.contactIds ?? [];
   await Promise.all(
-    contacts.map((id: string) => 
+    contacts.map((id: string) =>
       getUserById(id).then((u) => {
         u && resultList.push(u);
       })

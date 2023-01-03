@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import theme from "../theme";
 import {
   Avatar,
@@ -17,26 +17,16 @@ import ForumIcon from "@mui/icons-material/Forum";
 import { UserAvatar } from "./UserAvatar";
 import { Input } from "./Input";
 import { useAuthContext } from "../contexts/authContext";
-import { getContactList } from "../firebase/userAuth";
-import { BaseUser } from "../types/User";
+import { useContactListContext } from "../contexts/contactListContext";
 
-interface Props {}
+interface Props {
+  selectContact: (contactId: string) => void;
+  selectedContact?: string;
+}
 
-export const SideBar: FC<Props> = () => {
+export const SideBar: FC<Props> = ({ selectContact, selectedContact }) => {
   const { user } = useAuthContext();
-
-  const [ contactList, setContactList] = useState<BaseUser[]>([])
-
-  useEffect(() => {
-    if(!user) {
-      return
-    }
-    const load = async () => {
-      const result = await getContactList(user.id)
-      setContactList(result)
-    }
-    load();
-  }, [user]);
+  const { contactList } = useContactListContext();
 
   const [search, setSearch] = useState("");
 
@@ -86,18 +76,23 @@ export const SideBar: FC<Props> = () => {
           </ListItemButton>
         </ListItem>
         <Divider />
-        {contactList.map(
-          (contact) => (
-            <ListItem key={contact.id}>
-              <ListItemButton sx={{ borderRadius: 3 }}>
-                <ListItemIcon>
-                  <UserAvatar text={contact.name} />
-                </ListItemIcon>
-                <ListItemText primary={contact.name} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+        {contactList.map((contact) => (
+          <ListItem key={contact.id}>
+            <ListItemButton
+              sx={{
+                borderRadius: 3,
+                backgroundColor:
+                  selectedContact === contact.id ? theme.palette.grey[300] : "",
+              }}
+              onClick={() => selectContact(contact.id)}
+            >
+              <ListItemIcon>
+                <UserAvatar text={contact.name} />
+              </ListItemIcon>
+              <ListItemText primary={contact.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Drawer>
   );

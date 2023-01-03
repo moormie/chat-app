@@ -7,19 +7,22 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/authContext";
+import { ContactListContextProvider } from "./contexts/contactListContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <AuthContextProvider>
-    <ThemeProvider theme={theme}>
-      <React.StrictMode>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </React.StrictMode>
-    </ThemeProvider>
+    <ContactListContextProvider>
+      <ThemeProvider theme={theme}>
+        <React.StrictMode>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </React.StrictMode>
+      </ThemeProvider>
+    </ContactListContextProvider>
   </AuthContextProvider>
 );
 

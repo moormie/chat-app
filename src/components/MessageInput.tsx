@@ -11,15 +11,22 @@ interface Props {
 export const MessageInput: FC<Props> = ({ send }) => {
   const [text, setText] = useState("");
 
+  const onSendMessage = () => {
+    if (!!text) {
+      send(text);
+      setText("");
+    }
+  };
+
   return (
     <Grid container>
       <Grid container item alignItems="center" columnGap={1}>
         <Grid item xs>
-          <Input onChange={setText} placeholder="Type..." />
+          <Input value={text} onChange={setText} placeholder="Type..." />
         </Grid>
         <Grid item>
           <IconButton
-            onClick={() => send(text)}
+            onClick={onSendMessage}
             size="large"
             sx={{
               bgcolor: `${theme.palette.primary.light}`,
