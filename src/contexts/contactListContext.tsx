@@ -1,10 +1,10 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import { BaseUser } from "../types/User";
-import { getContactList } from "../firebase/userAuth";
+import { User } from "../types/User";
+import { getContactList } from "../firebase/contacts";
 import { useAuthContext } from "./authContext";
 
 interface ContextData {
-  contactList: BaseUser[];
+  contactList: User[];
 }
 
 export const ContactListContext = createContext<ContextData>({
@@ -18,7 +18,7 @@ type Props = {
 export const ContactListContextProvider: FC<Props> = ({ children }) => {
   const { user } = useAuthContext();
 
-  const [contactList, setContactList] = useState<BaseUser[]>([]);
+  const [contactList, setContactList] = useState<User[]>([]);
 
   useEffect(() => {
     if (!user) {

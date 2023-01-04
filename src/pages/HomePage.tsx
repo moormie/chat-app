@@ -8,14 +8,13 @@ import { useAuthContext } from "../contexts/authContext";
 import { createMessage } from "../firebase/messages";
 import { useChat } from "../hooks/useChat";
 import { useContactListContext } from "../contexts/contactListContext";
+import { SideBarContacts } from "../components/SideBarContacts";
 
 export const HomePage = () => {
   const { user } = useAuthContext();
   const { contactList } = useContactListContext();
 
-  const [selectedContact, setSelectedContact] = useState<string>(
-    contactList[0]?.id
-  );
+  const [selectedContact, setSelectedContact] = useState<string>();
 
   const chat = useChat(selectedContact);
 
@@ -41,11 +40,13 @@ export const HomePage = () => {
 
   return (
     <>
-      <SideBar
-        contactList={contactList}
-        selectContact={onSelectContact}
-        selectedContact={selectedContact}
-      />
+      <SideBar>
+        <SideBarContacts
+          contactList={contactList}
+          selectContact={onSelectContact}
+          selectedContact={selectedContact}
+        />
+      </SideBar>
       <Grid
         container
         width="calc(100% - 305px)"

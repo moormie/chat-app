@@ -9,8 +9,8 @@ interface LinkItem {
 }
 
 const linkList: LinkItem[] = [
-  { name: "Chat", navigate: "/chat" },
-  { name: "Contacts", navigate: "/contacts" },
+  { name: "Chat", navigate: "/home" },
+  { name: "Users", navigate: "/users" },
   { name: "Settings", navigate: "/settings" },
   { name: "Log Out", navigate: "" },
 ];

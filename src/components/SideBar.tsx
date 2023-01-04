@@ -1,35 +1,15 @@
 import { FC, useState } from "react";
 import theme from "../theme";
-import {
-  Avatar,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  Paper,
-  Box,
-} from "@mui/material";
-import ForumIcon from "@mui/icons-material/Forum";
-import { UserAvatar } from "./UserAvatar";
+import { Avatar, Drawer, Typography, Paper, Box } from "@mui/material";
+import { PermIdentityRounded } from "@mui/icons-material";
 import { Input } from "./Input";
 import { useAuthContext } from "../contexts/authContext";
-import { BaseUser } from "../types/User";
 
 interface Props {
-  contactList: BaseUser[];
-  selectedContact?: string;
-  selectContact: (contactId: string) => void;
+  children?: JSX.Element;
 }
 
-export const SideBar: FC<Props> = ({
-  contactList,
-  selectContact,
-  selectedContact,
-}) => {
+export const SideBar: FC<Props> = ({ children }) => {
   const { user } = useAuthContext();
 
   const [search, setSearch] = useState("");
@@ -60,8 +40,12 @@ export const SideBar: FC<Props> = ({
         }}
       >
         <Avatar
-          children="m"
-          sx={{ bgcolor: `${theme.palette.primary.dark}`, marginRight: 2 }}
+          children={<PermIdentityRounded />}
+          sx={{
+            bgcolor: `${theme.palette.primary.dark}`,
+            marginRight: 2,
+            color: `${theme.palette.primary.light}`,
+          }}
         />
         <Typography variant="h6" color="initial">
           {user?.name}
@@ -70,34 +54,7 @@ export const SideBar: FC<Props> = ({
       <Box mb={2}>
         <Input placeholder="Search ..." onChange={setSearch} />
       </Box>
-      <List sx={{ backgroundColor: "white", borderRadius: 5 }}>
-        <ListItem>
-          <ListItemButton sx={{ borderRadius: 3 }}>
-            <ListItemIcon>
-              <ForumIcon />
-            </ListItemIcon>
-            <ListItemText primary="New Conversation" />
-          </ListItemButton>
-        </ListItem>
-        <Divider />
-        {contactList.map((contact) => (
-          <ListItem key={contact.id}>
-            <ListItemButton
-              sx={{
-                borderRadius: 3,
-                backgroundColor:
-                  selectedContact === contact.id ? theme.palette.grey[300] : "",
-              }}
-              onClick={() => selectContact(contact.id)}
-            >
-              <ListItemIcon>
-                <UserAvatar text={contact.name} />
-              </ListItemIcon>
-              <ListItemText primary={contact.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {children}
     </Drawer>
   );
 };

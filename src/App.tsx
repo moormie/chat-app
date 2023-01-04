@@ -5,6 +5,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/authContext";
 import { User } from "./types/User";
+import { UsersPage } from "./pages/UsersPage";
 
 function App() {
   const { user, loading } = useAuthContext();
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Navigate to="login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/users" element={<UsersPage />} />
         <Route
           path="/home"
           element={
