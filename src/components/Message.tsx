@@ -1,5 +1,5 @@
-import { Grid, Typography } from "@mui/material";
 import { FC } from "react";
+import { Grid, Typography } from "@mui/material";
 import { UserAvatar } from "./UserAvatar";
 
 interface Props {

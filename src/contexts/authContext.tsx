@@ -49,11 +49,3 @@ export const useAuthContext = () => {
   const store = useContext(AuthContext);
   return store;
 };
-
-const saveUserToStorage = (id: string) => {
-  localStorage.setItem("uId", id);
-};
-
-const getUserFromStorage = () => {
-  return localStorage.getItem("uId");
-};

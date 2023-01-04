@@ -11,7 +11,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import moment from "moment"
+import moment from "moment";
 import { Message } from "../types/Message";
 
 export const messagesConverter = {
@@ -51,7 +51,7 @@ export const createMessage = async (
 
   const sentData = {
     message: message,
-    timestamp: moment.now(),
+    timestamp: moment.now().valueOf(),
     senderId: userId,
   };
 

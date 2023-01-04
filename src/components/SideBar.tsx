@@ -17,16 +17,20 @@ import ForumIcon from "@mui/icons-material/Forum";
 import { UserAvatar } from "./UserAvatar";
 import { Input } from "./Input";
 import { useAuthContext } from "../contexts/authContext";
-import { useContactListContext } from "../contexts/contactListContext";
+import { BaseUser } from "../types/User";
 
 interface Props {
-  selectContact: (contactId: string) => void;
+  contactList: BaseUser[];
   selectedContact?: string;
+  selectContact: (contactId: string) => void;
 }
 
-export const SideBar: FC<Props> = ({ selectContact, selectedContact }) => {
+export const SideBar: FC<Props> = ({
+  contactList,
+  selectContact,
+  selectedContact,
+}) => {
   const { user } = useAuthContext();
-  const { contactList } = useContactListContext();
 
   const [search, setSearch] = useState("");
 

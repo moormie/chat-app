@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { MessageInput } from "../components/MessageInput";
 import { MessageList } from "../components/MessageList";
@@ -7,13 +7,23 @@ import { SideBar } from "../components/SideBar";
 import { useAuthContext } from "../contexts/authContext";
 import { createMessage } from "../firebase/messages";
 import { useChat } from "../hooks/useChat";
+import { useContactListContext } from "../contexts/contactListContext";
 
 export const HomePage = () => {
   const { user } = useAuthContext();
+  const { contactList } = useContactListContext();
 
-  const [selectedContact, setSelectedContact] = useState<string>();
+  const [selectedContact, setSelectedContact] = useState<string>(
+    contactList[0]?.id
+  );
 
   const chat = useChat(selectedContact);
+
+  useEffect(() => {
+    if (!selectedContact && contactList.length > 0) {
+      setSelectedContact(contactList[0].id);
+    }
+  }, [contactList, selectedContact]);
 
   const onSelectContact = (contactId: string) => {
     setSelectedContact(contactId);
@@ -32,6 +42,7 @@ export const HomePage = () => {
   return (
     <>
       <SideBar
+        contactList={contactList}
         selectContact={onSelectContact}
         selectedContact={selectedContact}
       />

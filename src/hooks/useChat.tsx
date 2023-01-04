@@ -6,9 +6,10 @@ import { getMessagesFromSnapshot } from "../firebase/messages";
 import { Chat, Message } from "../types/Message";
 
 export const useChat = (contactId?: string) => {
-  const [chat, setChat] = useState<Chat[]>([]);
   const { contactList } = useContactListContext();
   const { user } = useAuthContext();
+
+  const [chat, setChat] = useState<Chat[]>([]);
 
   const observer = (snapshot: DocumentSnapshot<Message[]>) => {
     if (snapshot.exists() && user) {
@@ -21,7 +22,8 @@ export const useChat = (contactId?: string) => {
             : contactList.find((contact) => contact.id === message.senderId)
                 ?.name ?? "No Name",
       }));
-      setChat(chat);
+
+      setChat(chat.sort((a, b) => a.timestamp - b.timestamp));
     } else {
       setChat([]);
     }
