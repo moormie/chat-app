@@ -8,21 +8,24 @@ import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/authContext";
 import { ContactListContextProvider } from "./contexts/contactListContext";
+import { NewContactContextProvider } from "./hooks/useNewContact";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <AuthContextProvider>
-    <ContactListContextProvider>
-      <ThemeProvider theme={theme}>
-        <React.StrictMode>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </React.StrictMode>
-      </ThemeProvider>
-    </ContactListContextProvider>
+    <ThemeProvider theme={theme}>
+      <React.StrictMode>
+        <BrowserRouter>
+          <ContactListContextProvider>
+            <NewContactContextProvider>
+              <App />
+            </NewContactContextProvider>
+          </ContactListContextProvider>
+        </BrowserRouter>
+      </React.StrictMode>
+    </ThemeProvider>
   </AuthContextProvider>
 );
 
