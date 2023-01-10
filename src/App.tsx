@@ -1,5 +1,5 @@
 import "./App.css";
-import { HomePage } from "./pages/HomePage";
+import { ChatPage } from "./pages/ChatPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -21,7 +21,7 @@ function App() {
           path="/home"
           element={
             <ProtectedRoute user={user} loading={loading}>
-              <HomePage />
+              <ChatPage />
             </ProtectedRoute>
           }
         />

@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { Grid, Typography } from "@mui/material";
 import { Message } from "./Message";
 import { Chat } from "../types/Message";
@@ -11,6 +11,13 @@ interface Props {
 
 export const MessageList: FC<Props> = ({ chat }) => {
   const { user } = useAuthContext();
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chat]);
 
   return (
     <Grid container direction="column" rowGap={2}>
@@ -30,6 +37,7 @@ export const MessageList: FC<Props> = ({ chat }) => {
               message={message.message}
             />
           </Grid>
+          <div ref={bottomRef}></div>
         </React.Fragment>
       ))}
     </Grid>

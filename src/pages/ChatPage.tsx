@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import { MessageInput } from "../components/MessageInput";
-import { MessageList } from "../components/MessageList";
 import { NavBar } from "../components/NavBar";
 import { SideBar } from "../components/SideBar";
 import { useAuthContext } from "../contexts/authContext";
@@ -9,20 +7,26 @@ import { createMessage } from "../firebase/messages";
 import { useChat } from "../hooks/useChat";
 import { useContactListContext } from "../contexts/contactListContext";
 import { SideBarContacts } from "../components/SideBarContacts";
+import { ChatScreen } from "../components/ChatScreen";
+import { useNewContact } from "../hooks/useNewContact";
 
-export const HomePage = () => {
+export const ChatPage = () => {
   const { user } = useAuthContext();
   const { contactList } = useContactListContext();
 
+  const { newContact } = useNewContact();
+
   const [selectedContact, setSelectedContact] = useState<string>();
 
-  const chat = useChat(selectedContact);
+  const { chat } = useChat(selectedContact);
 
   useEffect(() => {
-    if (!selectedContact && contactList.length > 0) {
+    if (newContact) {
+      setSelectedContact(newContact.id);
+    } else if (!selectedContact && contactList.length > 0) {
       setSelectedContact(contactList[0].id);
     }
-  }, [contactList, selectedContact]);
+  }, [contactList, selectedContact, newContact]);
 
   const onSelectContact = (contactId: string) => {
     setSelectedContact(contactId);
@@ -42,41 +46,29 @@ export const HomePage = () => {
     <>
       <SideBar>
         <SideBarContacts
-          contactList={contactList}
+          contactList={
+            newContact ? contactList.concat(newContact) : contactList
+          }
           selectContact={onSelectContact}
           selectedContact={selectedContact}
         />
       </SideBar>
       <Grid
         container
+        direction="column"
         width="calc(100% - 305px)"
-        height="calc(100vh - 120px)"
+        height="100%"
         position="absolute"
         right={0}
         padding={2}
         boxSizing="border-box"
         rowGap={2}
       >
-        <Grid item xs>
+        <Grid item>
           <NavBar />
         </Grid>
-        <Grid
-          container
-          item
-          direction="column"
-          bgcolor="white"
-          padding={4}
-          borderRadius={6}
-          rowGap={4}
-          height="100%"
-          justifyContent="flex-end"
-        >
-          <Grid item overflow="auto" height={500}>
-            <MessageList chat={chat} />
-          </Grid>
-          <Grid item>
-            <MessageInput send={onSendMessage} />
-          </Grid>
+        <Grid item>
+          <ChatScreen chat={chat} sendMessage={onSendMessage} />
         </Grid>
       </Grid>
     </>

@@ -22,7 +22,6 @@ export const useChat = (contactId?: string) => {
             : contactList.find((contact) => contact.id === message.senderId)
                 ?.name ?? "No Name",
       }));
-
       setChat(chat.sort((a, b) => a.timestamp - b.timestamp));
     } else {
       setChat([]);
@@ -40,5 +39,5 @@ export const useChat = (contactId?: string) => {
     }
   }, [user, contactId]);
 
-  return chat;
+  return { chat };
 };
