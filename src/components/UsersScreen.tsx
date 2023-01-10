@@ -7,21 +7,26 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import CreateIcon from "@mui/icons-material/Create";
 import { User } from "../types/User";
 import { UserAvatar } from "./UserAvatar";
-import theme from "../theme";
+import { useNewContact } from "../hooks/useNewContact";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   userList: User[];
-  selectedId?: string;
-  onSelectContact: (id: string) => void;
 }
 
-export const UsersScreen: FC<Props> = ({
-  userList,
-  selectedId,
-  onSelectContact,
-}) => {
+export const UsersScreen: FC<Props> = ({ userList }) => {
+  const navigate = useNavigate();
+
+  const { setNewContact } = useNewContact();
+
+  const onSelectContact = (user: User) => {
+    setNewContact(user);
+    navigate("/home");
+  };
+
   return (
     <Grid
       container
@@ -37,18 +42,15 @@ export const UsersScreen: FC<Props> = ({
             <ListItemButton
               sx={{
                 borderRadius: 3,
-                backgroundColor:
-                  selectedId === user.id
-                    ? theme.palette.grey[300]
-                    : theme.palette.grey[100],
               }}
-              onClick={() => onSelectContact(user.id)}
+              onClick={() => onSelectContact(user)}
             >
               <ListItemIcon>
                 <UserAvatar text={user.name} />
               </ListItemIcon>
               <ListItemText primary={user.name} />
               <ListItemText>{user.email}</ListItemText>
+              <CreateIcon />
             </ListItemButton>
           </ListItem>
         ))}
