@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Grid, Link, Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { signOut } from "../firebase/userAuth";
+import { HOME_CHAT, HOME_USERS, SETTINGS } from "../contants/routes";
 
 interface LinkItem {
   name: string;
@@ -9,9 +10,9 @@ interface LinkItem {
 }
 
 const linkList: LinkItem[] = [
-  { name: "Chat", navigate: "/home" },
-  { name: "Users", navigate: "/users" },
-  { name: "Settings", navigate: "/settings" },
+  { name: "Chat", navigate: "/" + HOME_CHAT },
+  { name: "Users", navigate: "/" + HOME_USERS },
+  { name: "Settings", navigate: "/" + SETTINGS },
   { name: "Log Out", navigate: "" },
 ];
 

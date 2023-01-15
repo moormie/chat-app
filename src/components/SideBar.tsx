@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SideBar: FC<Props> = ({ children }) => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   const [search, setSearch] = useState("");
 
@@ -48,7 +48,7 @@ export const SideBar: FC<Props> = ({ children }) => {
           }}
         />
         <Typography variant="h6" color="initial">
-          {user?.name}
+          {currentUser?.name}
         </Typography>
       </Paper>
       <Box mb={2}>

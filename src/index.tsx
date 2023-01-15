@@ -7,26 +7,20 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./contexts/authContext";
-import { ContactListContextProvider } from "./contexts/contactListContext";
-import { NewContactContextProvider } from "./hooks/useNewContact";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <AuthContextProvider>
+  <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <React.StrictMode>
-        <BrowserRouter>
-          <ContactListContextProvider>
-            <NewContactContextProvider>
-              <App />
-            </NewContactContextProvider>
-          </ContactListContextProvider>
-        </BrowserRouter>
-      </React.StrictMode>
+      <BrowserRouter>
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
+      </BrowserRouter>
     </ThemeProvider>
-  </AuthContextProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

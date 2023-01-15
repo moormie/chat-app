@@ -12,6 +12,7 @@ import { User } from "../types/User";
 import { UserAvatar } from "./UserAvatar";
 import { useNewContact } from "../hooks/useNewContact";
 import { useNavigate } from "react-router-dom";
+import { HOME_CHAT } from "../contants/routes";
 
 interface Props {
   userList: User[];
@@ -24,7 +25,7 @@ export const UsersScreen: FC<Props> = ({ userList }) => {
 
   const onSelectContact = (user: User) => {
     setNewContact(user);
-    navigate("/home");
+    navigate("/" + HOME_CHAT);
   };
 
   return (

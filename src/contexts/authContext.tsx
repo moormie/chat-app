@@ -4,12 +4,12 @@ import { onAuthStateChanged } from "firebase/auth";
 import { User } from "../types/User";
 
 interface ContextData {
-  user: User | null;
+  currentUser: User | null;
   loading: boolean;
 }
 
 export const AuthContext = createContext<ContextData>({
-  user: null,
+  currentUser: null,
   loading: true,
 });
 
@@ -39,7 +39,7 @@ export const AuthContextProvider: FC<Props> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: currentUser, loading: loading }}>
+    <AuthContext.Provider value={{ currentUser, loading }}>
       {children}
     </AuthContext.Provider>
   );

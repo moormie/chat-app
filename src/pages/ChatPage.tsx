@@ -8,25 +8,24 @@ import { useChat } from "../hooks/useChat";
 import { useContactListContext } from "../contexts/contactListContext";
 import { SideBarContacts } from "../components/SideBarContacts";
 import { ChatScreen } from "../components/ChatScreen";
-import { useNewContact } from "../hooks/useNewContact";
+import {
+  NewContactContextProvider,
+  useNewContact,
+} from "../hooks/useNewContact";
+import { User } from "../types/User";
 
 export const ChatPage = () => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const { contactList } = useContactListContext();
+  const [chatContacts, setChatContacts] = useState<User[]>(contactList);
 
   const { newContact } = useNewContact();
 
-  const [selectedContact, setSelectedContact] = useState<string>();
+  const [selectedContact, setSelectedContact] = useState<string | undefined>(
+    newContact?.id
+  );
 
   const { chat } = useChat(selectedContact);
-
-  useEffect(() => {
-    if (newContact) {
-      setSelectedContact(newContact.id);
-    } else if (!selectedContact && contactList.length > 0) {
-      setSelectedContact(contactList[0].id);
-    }
-  }, [contactList, selectedContact, newContact]);
 
   const onSelectContact = (contactId: string) => {
     setSelectedContact(contactId);
@@ -34,21 +33,33 @@ export const ChatPage = () => {
 
   const onSendMessage = async (message: string) => {
     try {
-      if (user && selectedContact) {
-        await createMessage(message, user.id, selectedContact);
+      if (currentUser && selectedContact) {
+        await createMessage(message, currentUser.id, selectedContact);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    if (!selectedContact && contactList.length > 0) {
+      setSelectedContact(contactList[0].id);
+    }
+  }, [contactList, selectedContact]);
+
+  useEffect(() => {
+    if (newContact && !contactList.find((c) => c.id === newContact.id)) {
+      setChatContacts(contactList.concat(newContact));
+    } else {
+      setChatContacts(contactList);
+    }
+  }, [newContact, contactList]);
+
   return (
-    <>
+    <NewContactContextProvider>
       <SideBar>
         <SideBarContacts
-          contactList={
-            newContact ? contactList.concat(newContact) : contactList
-          }
+          contactList={chatContacts}
           selectContact={onSelectContact}
           selectedContact={selectedContact}
         />
@@ -71,6 +82,6 @@ export const ChatPage = () => {
           <ChatScreen chat={chat} sendMessage={onSendMessage} />
         </Grid>
       </Grid>
-    </>
+    </NewContactContextProvider>
   );
 };

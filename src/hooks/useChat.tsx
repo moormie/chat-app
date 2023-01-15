@@ -7,18 +7,18 @@ import { Chat, Message } from "../types/Message";
 
 export const useChat = (contactId?: string) => {
   const { contactList } = useContactListContext();
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   const [chat, setChat] = useState<Chat[]>([]);
 
   const observer = (snapshot: DocumentSnapshot<Message[]>) => {
-    if (snapshot.exists() && user) {
+    if (snapshot.exists() && currentUser) {
       const messageList = snapshot.data();
       const chat: Chat[] = messageList.map((message) => ({
         ...message,
         senderName:
-          message.senderId === user.id
-            ? user?.name
+          message.senderId === currentUser.id
+            ? currentUser?.name
             : contactList.find((contact) => contact.id === message.senderId)
                 ?.name ?? "No Name",
       }));
@@ -29,15 +29,15 @@ export const useChat = (contactId?: string) => {
   };
 
   useEffect(() => {
-    if (!user || !contactId) {
+    if (!currentUser || !contactId) {
       return;
     }
-    const unsub = getMessagesFromSnapshot(user.id, contactId, observer);
+    const unsub = getMessagesFromSnapshot(currentUser.id, contactId, observer);
 
     if (unsub) {
       return () => unsub();
     }
-  }, [user, contactId]);
+  }, [currentUser, contactId]);
 
   return { chat };
 };

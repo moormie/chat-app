@@ -16,20 +16,20 @@ type Props = {
 };
 
 export const ContactListContextProvider: FC<Props> = ({ children }) => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   const [contactList, setContactList] = useState<User[]>([]);
 
   useEffect(() => {
-    if (!user) {
+    if (!currentUser) {
       return;
     }
     const load = async () => {
-      const result = await getContactList(user.id);
+      const result = await getContactList(currentUser.id);
       setContactList(result);
     };
     load();
-  }, [user]);
+  }, [currentUser]);
 
   return (
     <ContactListContext.Provider value={{ contactList: contactList }}>

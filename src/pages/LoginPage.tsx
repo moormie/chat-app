@@ -4,6 +4,7 @@ import "../App.css";
 import { signIn } from "../firebase/userAuth";
 import { useNavigate } from "react-router-dom";
 import { MainScreen } from "../components/MainScreen";
+import { HOME_CHAT } from "../contants/routes";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const LoginPage = () => {
   const submitLogin = async (email: string, password: string) => {
     try {
       await signIn(email, password);
-      navigate("/home");
+      navigate("/" + HOME_CHAT);
     } catch (error: any) {
       serErrorMessage(error.message);
     }

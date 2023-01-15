@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const MessageList: FC<Props> = ({ chat }) => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export const MessageList: FC<Props> = ({ chat }) => {
           </Grid>
           <Grid item>
             <Message
-              type={user?.id === message.senderId ? "owner" : "sender"}
+              type={currentUser?.id === message.senderId ? "owner" : "sender"}
               userName={message.senderName}
               message={message.message}
             />
