@@ -26,6 +26,7 @@ export const createNewUser = async (
       await setDoc(doc(db, "users", uid), {
         id: uid,
         name: displayName,
+        email: email,
         contacts: [],
       });
     }

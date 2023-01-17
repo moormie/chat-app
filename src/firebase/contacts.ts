@@ -1,4 +1,10 @@
-import { collection, getDocs, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+} from "firebase/firestore";
 import { User } from "../types/User";
 import { db } from "./firebase";
 import { getUserById } from "./users";
@@ -24,4 +30,16 @@ export const getContactList = async (id: string) => {
     )
   );
   return resultList;
+};
+
+export const getContactsFromSnapshot = (
+  id: string,
+  metaObserver: (snapshot: QuerySnapshot) => void
+) => {
+  try {
+    const q = query(collection(db, "users", id, "chats"));
+    return onSnapshot(q, metaObserver);
+  } catch (error) {
+    console.log(error);
+  }
 };

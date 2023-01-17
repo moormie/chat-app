@@ -1,7 +1,16 @@
-import { createContext, FC, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { User } from "../types/User";
-import { getContactList } from "../firebase/contacts";
+import { getContactsFromSnapshot } from "../firebase/contacts";
 import { useAuthContext } from "./authContext";
+import { getUserById } from "../firebase/users";
+import { QuerySnapshot } from "firebase/firestore";
 
 interface ContextData {
   contactList: User[];
@@ -20,16 +29,29 @@ export const ContactListContextProvider: FC<Props> = ({ children }) => {
 
   const [contactList, setContactList] = useState<User[]>([]);
 
+  const observer = useCallback(async (snapshot: QuerySnapshot) => {
+    const resultIdList: string[] = [];
+    const resultList: User[] = [];
+    snapshot.forEach((doc) => {
+      resultIdList.push(doc.id);
+    });
+    await Promise.all(
+      resultIdList.map((id: string) =>
+        getUserById(id).then((u) => {
+          u && resultList.push(u);
+        })
+      )
+    );
+    setContactList(resultList);
+  }, []);
+
   useEffect(() => {
     if (!currentUser) {
       return;
     }
-    const load = async () => {
-      const result = await getContactList(currentUser.id);
-      setContactList(result);
-    };
-    load();
-  }, [currentUser]);
+    const unsub = getContactsFromSnapshot(currentUser.id, observer);
+    return () => unsub && unsub();
+  }, [currentUser, observer]);
 
   return (
     <ContactListContext.Provider value={{ contactList: contactList }}>
