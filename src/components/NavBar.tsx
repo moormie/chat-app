@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Grid, Link, Button } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { signOut } from "../firebase/userAuth";
 import { HOME_CHAT, HOME_USERS, SETTINGS } from "../contants/routes";
+import { LogoutAlert } from "./LogoutAlert";
 
 interface LinkItem {
   name: string;
@@ -20,10 +21,12 @@ export const NavBar: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLogOut, setIsLogOut] = useState(false);
+
   const onSelectLink = (linkItem: LinkItem) => {
     if (linkItem.name === "Log Out") {
-      signOut();
-      navigate("/");
+      setIsLogOut(true);
+      // navigate("/");
     } else {
       navigate(linkItem.navigate);
     }
@@ -31,6 +34,11 @@ export const NavBar: FC = () => {
 
   const isSelected = (link: string) => {
     return location.pathname === link;
+  };
+
+  const logOut = () => {
+    signOut();
+    navigate("/");
   };
 
   return (
@@ -54,6 +62,9 @@ export const NavBar: FC = () => {
           {link.name}
         </Link>
       ))}
+      {isLogOut && (
+        <LogoutAlert onCancel={() => setIsLogOut(false)} onSubmit={logOut} />
+      )}
     </Grid>
   );
 };
