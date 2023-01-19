@@ -14,10 +14,12 @@ import { QuerySnapshot } from "firebase/firestore";
 
 interface ContextData {
   contactList: User[];
+  loading: boolean;
 }
 
 export const ContactListContext = createContext<ContextData>({
   contactList: [],
+  loading: true,
 });
 
 type Props = {
@@ -28,8 +30,10 @@ export const ContactListContextProvider: FC<Props> = ({ children }) => {
   const { currentUser } = useAuthContext();
 
   const [contactList, setContactList] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const observer = useCallback(async (snapshot: QuerySnapshot) => {
+    setLoading(true);
     const resultIdList: string[] = [];
     const resultList: User[] = [];
     snapshot.forEach((doc) => {
@@ -42,6 +46,7 @@ export const ContactListContextProvider: FC<Props> = ({ children }) => {
         })
       )
     );
+    setLoading(false);
     setContactList(resultList);
   }, []);
 
@@ -54,7 +59,7 @@ export const ContactListContextProvider: FC<Props> = ({ children }) => {
   }, [currentUser, observer]);
 
   return (
-    <ContactListContext.Provider value={{ contactList: contactList }}>
+    <ContactListContext.Provider value={{ contactList, loading }}>
       {children}
     </ContactListContext.Provider>
   );

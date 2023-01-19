@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { CHAT, USERS } from "../../contants/routes";
-import { ChatPage } from "../ChatPage";
-import { UsersPage } from "../UsersPage";
+import { ChatPage } from "./ChatPage";
+import { UsersPage } from "./UsersPage";
 
 export const HomePage = () => {
   return (

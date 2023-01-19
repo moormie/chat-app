@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import { NavBar } from "../components/NavBar";
-import { SideBar } from "../components/SideBar";
-import { useAuthContext } from "../contexts/authContext";
-import { createMessage } from "../firebase/messages";
-import { useChat } from "../hooks/useChat";
-import { useContactListContext } from "../contexts/contactListContext";
-import { SideBarContacts } from "../components/SideBarContacts";
-import { ChatScreen } from "../components/ChatScreen";
-import {
-  NewContactContextProvider,
-  useNewContact,
-} from "../hooks/useNewContact";
-import { User } from "../types/User";
+import { NavBar } from "../../components/NavBar";
+import { SideBar } from "../../components/SideBar";
+import { useAuthContext } from "../../contexts/authContext";
+import { createMessage } from "../../firebase/messages";
+import { useChat } from "../../hooks/useChat";
+import { useContactListContext } from "../../contexts/contactListContext";
+import { SideBarContacts } from "../../components/SideBarContacts";
+import { ChatScreen } from "../../components/ChatScreen";
+import { useNewContact } from "../../hooks/useNewContact";
+import { User } from "../../types/User";
+import { LoadingIndicator } from "../../components/LoadingIndicator";
 
 export const ChatPage = () => {
   const { currentUser } = useAuthContext();
-  const { contactList } = useContactListContext();
+  const { contactList, loading } = useContactListContext();
   const [chatContacts, setChatContacts] = useState<User[]>(contactList);
 
   const { newContact } = useNewContact();
@@ -56,7 +54,8 @@ export const ChatPage = () => {
   }, [newContact, contactList]);
 
   return (
-    <NewContactContextProvider>
+    <>
+      {loading && <LoadingIndicator />}
       <SideBar>
         <SideBarContacts
           contactList={chatContacts}
@@ -82,6 +81,6 @@ export const ChatPage = () => {
           <ChatScreen chat={chat} sendMessage={onSendMessage} />
         </Grid>
       </Grid>
-    </NewContactContextProvider>
+    </>
   );
 };

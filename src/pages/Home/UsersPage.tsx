@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
-import { NavBar } from "../components/NavBar";
-import { SideBar } from "../components/SideBar";
-import { User } from "../types/User";
-import { getUsers } from "../firebase/users";
+import { NavBar } from "../../components/NavBar";
+import { SideBar } from "../../components/SideBar";
+import { User } from "../../types/User";
+import { getUsers } from "../../firebase/users";
 import { Grid } from "@mui/material";
-import { UsersScreen } from "../components/UsersScreen";
+import { UsersScreen } from "../../components/UsersScreen";
+import { LoadingIndicator } from "../../components/LoadingIndicator";
 
 export const UsersPage = () => {
   const [userList, setUserList] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getUsers().then((data) => setUserList(data));
+    setLoading(true);
+    getUsers()
+      .then((data) => setUserList(data))
+      .then(() => setLoading(false));
   }, []);
 
   return (
     <>
+      {loading && <LoadingIndicator />}
       <SideBar />
       <Grid
         container
