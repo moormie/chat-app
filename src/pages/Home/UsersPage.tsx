@@ -10,6 +10,8 @@ import { LoadingIndicator } from "../../components/LoadingIndicator";
 export const UsersPage = () => {
   const [userList, setUserList] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filteredUserList, setFilteredUserList] = useState<User[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -18,10 +20,23 @@ export const UsersPage = () => {
       .then(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (search) {
+      const list = userList.filter(
+        (user) =>
+          user.name.toLowerCase().includes(search.toLowerCase()) ||
+          user.email.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilteredUserList(list);
+    } else {
+      setFilteredUserList(userList);
+    }
+  }, [search, userList]);
+
   return (
     <>
       {loading && <LoadingIndicator />}
-      <SideBar />
+      <SideBar onChange={setSearch} />
       <Grid
         container
         direction="column"
@@ -37,7 +52,7 @@ export const UsersPage = () => {
           <NavBar />
         </Grid>
         <Grid item>
-          <UsersScreen userList={userList} />
+          <UsersScreen userList={filteredUserList} />
         </Grid>
       </Grid>
     </>

@@ -16,23 +16,17 @@ export const ChatPage = () => {
   const { currentUser } = useAuthContext();
   const { contactList, loading } = useContactListContext();
   const [chatContacts, setChatContacts] = useState<User[]>(contactList);
-
   const { newContact } = useNewContact();
-
-  const [selectedContact, setSelectedContact] = useState<string | undefined>(
-    newContact?.id
-  );
-
-  const { chat } = useChat(selectedContact);
-
-  const onSelectContact = (contactId: string) => {
-    setSelectedContact(contactId);
-  };
+  const [selectedContactId, setSelectedContactId] = useState<
+    string | undefined
+  >(newContact?.id);
+  const { chat } = useChat(selectedContactId);
+  const [search, setSearch] = useState("");
 
   const onSendMessage = async (message: string) => {
     try {
-      if (currentUser && selectedContact) {
-        await createMessage(message, currentUser.id, selectedContact);
+      if (currentUser && selectedContactId) {
+        await createMessage(message, currentUser.id, selectedContactId);
       }
     } catch (error) {
       console.log(error);
@@ -40,27 +34,29 @@ export const ChatPage = () => {
   };
 
   useEffect(() => {
-    if (!selectedContact && contactList.length > 0) {
-      setSelectedContact(contactList[0].id);
-    }
-  }, [contactList, selectedContact]);
-
-  useEffect(() => {
+    let resultList = contactList;
     if (newContact && !contactList.find((c) => c.id === newContact.id)) {
-      setChatContacts(contactList.concat(newContact));
-    } else {
-      setChatContacts(contactList);
+      resultList = resultList.concat(newContact);
     }
-  }, [newContact, contactList]);
+    if (search) {
+      resultList = resultList.filter((c) =>
+        c.name.toLowerCase().includes(search)
+      );
+    }
+    setChatContacts(resultList);
+    if (!selectedContactId && contactList.length > 0) {
+      setSelectedContactId(contactList[0].id);
+    }
+  }, [newContact, contactList, search, selectedContactId]);
 
   return (
     <>
       {loading && <LoadingIndicator />}
-      <SideBar>
+      <SideBar onChange={setSearch}>
         <SideBarContacts
           contactList={chatContacts}
-          selectContact={onSelectContact}
-          selectedContact={selectedContact}
+          selectContact={setSelectedContactId}
+          selectedContact={selectedContactId}
         />
       </SideBar>
       <Grid
