@@ -5,7 +5,8 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/authContext";
 import { User } from "./types/User";
 import { Home } from "./pages/Home";
-import { HOME, LOGIN, REGISTER } from "./constants/routes";
+import { HOME, LOGIN, REGISTER, SETTINGS } from "./constants/routes";
+import { SettingsPage } from "./pages/Home/SettingsPage";
 
 function App() {
   const { currentUser, loading } = useAuthContext();
@@ -26,6 +27,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path={SETTINGS} element={<SettingsPage />} />
       </Routes>
     </div>
   );

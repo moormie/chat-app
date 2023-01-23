@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC } from "react";
 import theme from "../theme";
 import { Avatar, Drawer, Typography, Paper, Box } from "@mui/material";
 import { PermIdentityRounded } from "@mui/icons-material";
@@ -7,7 +7,7 @@ import { useAuthContext } from "../contexts/authContext";
 
 interface Props {
   children?: JSX.Element;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   value?: string;
 }
 
@@ -52,7 +52,10 @@ export const SideBar: FC<Props> = ({ children, value, onChange }) => {
         </Typography>
       </Paper>
       <Box mb={2}>
-        <Input placeholder="Search ..." onChange={onChange} />
+        <Input
+          placeholder="Search ..."
+          onChange={onChange ? onChange : () => {}}
+        />
       </Box>
       {children}
     </Drawer>
