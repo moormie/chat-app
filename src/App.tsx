@@ -5,7 +5,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthContext } from "./contexts/authContext";
 import { User } from "./types/User";
 import { Home } from "./pages/Home";
-import { HOME, LOGIN, REGISTER } from "./contants/routes";
+import { HOME, LOGIN, REGISTER } from "./constants/routes";
 
 function App() {
   const { currentUser, loading } = useAuthContext();

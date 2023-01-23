@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { CHAT, USERS } from "../../contants/routes";
+import { CHAT, USERS } from "../../constants/routes";
 import { ChatPage } from "./ChatPage";
 import { UsersPage } from "./UsersPage";
 

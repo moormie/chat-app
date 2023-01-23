@@ -4,7 +4,7 @@ import "../App.css";
 import { signIn } from "../firebase/userAuth";
 import { useNavigate } from "react-router-dom";
 import { MainScreen } from "../components/MainScreen";
-import { HOME_CHAT } from "../contants/routes";
+import { HOME_CHAT } from "../constants/routes";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
